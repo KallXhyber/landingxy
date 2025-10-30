@@ -31,20 +31,76 @@
 
         html {
             scroll-behavior: smooth;
+            background-color: var(--bg-dark); /* Fallback jika video gagal */
         }
 
         body {
             font-family: 'Press Start 2P', cursive;
-            background-color: var(--bg-dark);
             color: var(--text-light);
-            /* Background gradasi ungu simpel */
-            background: linear-gradient(180deg, var(--bg-medium) 0%, var(--bg-dark) 100%);
-            background-attachment: fixed;
             text-align: center;
             line-height: 1.8;
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
             image-rendering: pixelated;
+        }
+        
+        /* --- Pre-Loader --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            font-size: 1.5rem;
+            color: var(--accent-green);
+        }
+        .loader {
+            width: 64px;
+            height: 64px;
+            animation: pixel-loader 2s infinite steps(8);
+            background-image: 
+                radial-gradient(var(--accent-yellow) 4px, transparent 4px),
+                radial-gradient(var(--accent-yellow) 4px, transparent 4px),
+                radial-gradient(var(--accent-pink) 4px, transparent 4px),
+                radial-gradient(var(--accent-pink) 4px, transparent 4px),
+                radial-gradient(var(--accent-green) 4px, transparent 4px),
+                radial-gradient(var(--accent-green) 4px, transparent 4px),
+                radial-gradient(var(--accent-yellow) 4px, transparent 4px),
+                radial-gradient(var(--accent-yellow) 4px, transparent 4px);
+            background-repeat: no-repeat;
+            background-size: 8px 8px;
+        }
+        @keyframes pixel-loader {
+            0% { background-position: 28px 0px, 28px 56px, 0px 28px, 56px 28px, 8px 8px, 48px 48px, 8px 48px, 48px 8px; }
+            12.5% { background-position: 8px 8px, 48px 48px, 0px 28px, 56px 28px, 28px 0px, 28px 56px, 8px 48px, 48px 8px; }
+            25% { background-position: 8px 8px, 48px 48px, 8px 48px, 48px 8px, 28px 0px, 28px 56px, 0px 28px, 56px 28px; }
+            37.5% { background-position: 8px 48px, 48px 8px, 8px 8px, 48px 48px, 28px 0px, 28px 56px, 0px 28px, 56px 28px; }
+            50% { background-position: 8px 48px, 48px 8px, 8px 8px, 48px 48px, 28px 0px, 28px 56px, 0px 28px, 56px 28px; }
+            62.5% { background-position: 28px 0px, 28px 56px, 8px 48px, 48px 8px, 8px 8px, 48px 48px, 0px 28px, 56px 28px; }
+            75% { background-position: 28px 0px, 28px 56px, 0px 28px, 56px 28px, 8px 8px, 48px 48px, 8px 48px, 48px 8px; }
+            87.5% { background-position: 28px 0px, 28px 56px, 0px 28px, 56px 28px, 8px 48px, 48px 8px, 8px 8px, 48px 48px; }
+            100% { background-position: 28px 0px, 28px 56px, 0px 28px, 56px 28px, 8px 48px, 48px 8px, 8px 8px, 48px 48px; }
+        }
+
+        /* Video Background */
+        #video-bg {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1; 
+            object-fit: cover;
+            filter: brightness(0.3); 
         }
 
         /* --- Utility --- */
@@ -60,22 +116,19 @@
             color: var(--accent-green);
             text-shadow: 4px 4px 0px var(--shadow-black);
         }
-
         h2 {
             font-size: 2rem;
             margin-bottom: 40px;
             color: var(--accent-yellow);
             animation: pulse-shadow-yellow 2s infinite linear;
         }
-        
         h3 {
              color: var(--accent-pink);
              font-size: 1.2rem;
              margin-bottom: 15px;
         }
-
         img {
-            image-rendering: pixelated; /* Wajib untuk gaya pixel */
+            image-rendering: pixelated; 
             max-width: 100%;
         }
 
@@ -85,43 +138,43 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            background-color: var(--bg-medium);
+            /* [FIX] background-color DIHAPUS */
+            /* background-color: rgba(68, 49, 90, 0.8); */ 
+            backdrop-filter: blur(5px); /* Efek blur tetap ada */
             padding: 20px 40px;
-            border-bottom: 4px solid var(--shadow-black);
-            box-shadow: 0 8px 0 var(--shadow-black);
+            /* [FIX] border-bottom dan box-shadow DIHAPUS */
+            /* border-bottom: 4px solid var(--shadow-black); */
+            /* box-shadow: 0 8px 0 var(--shadow-black); */
             position: sticky;
             top: 0;
             z-index: 100;
         }
-
         .navbar .logo {
             font-size: 1.5rem;
             color: var(--accent-green);
             text-shadow: 3px 3px 0 var(--shadow-black);
             animation: pulse-shadow 2.5s infinite linear;
         }
-
-        /* Menu untuk Desktop */
-        .navbar-menu {
-            display: flex;
-        }
-
+        .navbar-menu { display: flex; }
         .navbar-menu a {
             margin: 5px 10px;
             text-decoration: none;
             color: var(--accent-pink);
             font-size: 0.9rem;
             transition: all 0.2s;
+            padding: 10px 15px; 
+            border: 4px solid transparent; 
         }
-
         .navbar-menu a:hover {
             color: var(--accent-yellow);
-            text-shadow: 0 0 10px var(--accent-yellow);
+            text-shadow: none; 
+            background-color: transparent; 
+            border: 4px solid transparent; 
+            box-shadow: none; 
+            transform: translateY(-4px); 
         }
-        
-        /* Tombol Hamburger (Hanya Tampil di Mobile) */
         .navbar-hamburger {
-            display: none; /* Sembunyi di desktop */
+            display: none; 
             background: none;
             border: 4px solid var(--accent-pink);
             box-shadow: 4px 4px 0 var(--shadow-black);
@@ -143,7 +196,10 @@
 
         /* --- Tombol Pixel --- */
         .pixel-btn {
-            display: inline-block;
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            gap: 12px; 
             background-color: var(--accent-pink);
             color: var(--bg-dark);
             padding: 15px 25px;
@@ -152,79 +208,99 @@
             box-shadow: 6px 6px 0px var(--shadow-black);
             transition: all 0.1s ease-out;
             font-size: 1rem;
-            margin: 10px 5px; /* Diberi margin agar tidak dempet */
+            margin: 10px 5px; 
             font-family: 'Press Start 2P', cursive;
         }
-        
-        .pixel-btn.btn-green {
-            background-color: var(--accent-green);
-        }
-
+        .pixel-btn.btn-green { background-color: var(--accent-green); }
         .pixel-btn:hover {
             background-color: var(--accent-yellow);
             box-shadow: 9px 9px 0px var(--shadow-black);
             animation: hover-jiggle 0.4s infinite linear;
         }
-
         .pixel-btn:active {
             background-color: var(--accent-green);
             transform: translate(3px, 3px);
             box-shadow: 3px 3px 0px var(--shadow-black);
             animation: none;
         }
-        
         .pixel-btn.btn-small {
             font-size: 0.8rem;
             padding: 10px 15px;
             box-shadow: 4px 4px 0px var(--shadow-black);
             margin: 5px;
         }
-        .pixel-btn.btn-small:hover {
-            box-shadow: 6px 6px 0px var(--shadow-black);
-        }
+        .pixel-btn.btn-small:hover { box-shadow: 6px 6px 0px var(--shadow-black); }
 
         /* --- Hero Section --- */
-        .hero {
-            padding: 60px 20px;
-        }
-        
+        .hero { padding: 60px 20px 20px 20px; }
         .hero-logo {
             width: 150px;
             height: 150px;
-            object-fit: contain; /* Ganti ke contain agar tidak terpotong */
+            object-fit: contain; 
             margin-bottom: 30px;
             transition: transform 0.2s;
         }
-        
-        .hero-logo:hover {
-            animation: hero-spin 2s linear infinite;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-        }
-        
+        .hero-logo:hover { animation: hero-spin 2s linear infinite; }
+        .hero h1 { font-size: 2.5rem; }
         .hero p {
             font-size: 1rem;
             color: var(--text-light);
             margin-top: 20px;
         }
-
-        /* --- Bagian Panduan --- */
-        .guide-section {
-            background-color: rgba(0,0,0,0.1); /* Sedikit lebih gelap */
-            padding: 60px 20px;
-            border-top: 4px solid var(--shadow-black);
-        }
         
+        .hero h1 .cursor {
+            display: inline-block;
+            background-color: var(--accent-green);
+            animation: blink 1s infinite;
+        }
+        .hero h1 .cursor.typing { animation: none; }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* --- Quick Links / CTA Utama --- */
+        #cta-utama {
+            padding-top: 20px;
+            padding-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        #cta-utama .pixel-btn { font-size: 0.9rem; }
+
+        /* --- Section Styling (Panduan, Bahan, Fitur, dll) --- */
+        .content-section {
+            /* [FIX] background-color DIHAPUS */
+            /* background-color: rgba(44, 33, 58, 0.7); */ 
+            padding: 60px 20px;
+            /* [FIX] border-top DIHAPUS */
+            /* border-top: 4px solid var(--shadow-black); */
+            
+            /* Animasi Scroll */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .content-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* [FIX] background-color DIHAPUS */
+        .content-section.alt {
+            /* background-color: rgba(68, 49, 90, 0.7); */ 
+        }
+
+        /* --- Panduan --- */
         .guide-steps {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 30px;
         }
-        
         .guide-step {
+            /* Box-box ini tetap perlu background agar teks terbaca */
             background: var(--bg-dark);
             border: 4px solid var(--accent-pink);
             box-shadow: 6px 6px 0 var(--shadow-black);
@@ -234,30 +310,28 @@
             text-align: left;
             transition: all 0.2s ease-out;
         }
-        
         .guide-step:hover {
              transform: translateY(-8px);
              box-shadow: 10px 10px 0px var(--accent-pink);
         }
-        
-        .guide-step p {
+        .guide-step p, .guide-step ul {
             font-size: 0.9rem;
             color: var(--text-light);
+            line-height: 1.7;
         }
-
-        /* --- Bagian Bahan & Tutorial --- */
-        #bahan {
-            border-top: 4px solid var(--shadow-black);
-            border-bottom: 4px solid var(--shadow-black);
+        .guide-step ul {
+            padding-left: 20px;
+            margin-top: 10px;
         }
+        .guide-step strong { color: var(--accent-yellow); }
 
+        /* --- Bahan & Tutorial --- */
         .bahan-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
             margin-bottom: 40px;
         }
-
         .bahan-card {
             background: var(--bg-medium);
             border: 4px solid var(--accent-yellow);
@@ -265,22 +339,9 @@
             padding: 20px;
             transition: all 0.2s ease-out;
         }
-        
-        .bahan-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .bahan-card h3 {
-            font-size: 1rem;
-            margin-bottom: 20px;
-        }
-        
-        .bahan-card p {
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-        
-        /* Grid Video Tutorial BARU */
+        .bahan-card:hover { transform: translateY(-5px); }
+        .bahan-card h3 { font-size: 1rem; margin-bottom: 20px; }
+        .bahan-card p { font-size: 0.9rem; margin-bottom: 15px; }
         .tutorial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -299,12 +360,12 @@
             color: var(--accent-green);
             text-shadow: none;
         }
-        .tutorial-video { /* Kelas untuk iframe */
+        .tutorial-video { 
             border: 4px solid var(--shadow-black);
             width: 100%;
-            height: 200px; /* Lebih kecil untuk grid */
+            height: 200px; 
         }
-        .video-placeholder { /* Placeholder jika video belum ada */
+        .video-placeholder { 
             border: 4px dashed var(--accent-pink);
             width: 100%;
             height: 200px;
@@ -315,62 +376,75 @@
             font-size: 0.9rem;
         }
 
-        /* --- CTA Section --- */
-        .cta-section {
-            padding: 60px 20px;
-        }
-        
-        .cta-section p {
-            font-size: 1.1rem;
-            color: var(--accent-yellow);
-            margin-bottom: 20px;
-        }
-
-        /* --- Features Section (Grid 5x5 = 25) --- */
-        .features-section {
-            background-color: rgba(0,0,0,0.1); /* Sedikit lebih gelap */
-            padding: 60px 20px;
-            border-top: 4px solid var(--shadow-black);
-        }
-        
+        /* --- Fitur --- */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Dikecilkan sedikit */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 25px;
+            margin: 0 auto;
         }
-
         .feature-box {
             background: var(--bg-dark);
             border: 4px solid var(--accent-pink);
             box-shadow: 6px 6px 0 var(--shadow-black);
-            padding: 20px 15px;
+            padding: 20px 15px; 
             transition: all 0.2s ease-out;
         }
-        
         .feature-box span {
             font-size: 1.5rem;
             color: var(--accent-yellow);
         }
-
         .feature-box h3 {
-            font-size: 0.9rem;
+            font-size: 0.9rem; 
             color: var(--text-light);
             margin-top: 10px;
             text-shadow: none;
             line-height: 1.5;
         }
-
         .feature-box:hover {
             transform: translateY(-10px) scale(1.05) rotate(-3deg);
             box-shadow: 10px 10px 0px var(--accent-green);
-            background: #000;
+            background: transparent; 
         }
 
-        /* --- Live Discord Section --- */
-        .discord-section {
-            padding: 60px 20px;
+        /* --- FAQ Accordion --- */
+        .faq-item {
+            background: var(--bg-dark);
+            border: 4px solid var(--accent-pink);
+            box-shadow: 6px 6px 0 var(--shadow-black);
+            margin-bottom: 15px;
+            text-align: left;
         }
-        
+        .faq-question {
+            padding: 15px 20px;
+            font-size: 0.9rem;
+            color: var(--accent-yellow);
+            cursor: pointer;
+            position: relative;
+        }
+        .faq-question::after {
+            content: '[+]';
+            position: absolute;
+            right: 20px;
+            color: var(--accent-green);
+        }
+        .faq-item.active .faq-question::after {
+            content: '[-]';
+        }
+        .faq-answer {
+            padding: 0 20px;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 300px; 
+            padding: 15px 20px;
+        }
+
+        /* --- Discord --- */
         .discord-widget-container {
              border: 4px solid var(--accent-green);
              box-shadow: 8px 8px 0 var(--shadow-black);
@@ -380,13 +454,10 @@
              margin: 0 auto;
              background: var(--bg-dark);
         }
+        .discord-widget { width: 100%; height: 100%; }
+        .discord-section .pixel-btn { display: none; }
         
-        .discord-widget {
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* --- Team Section --- */
+        /* --- Team --- */
         .team-grid {
             display: flex;
             flex-wrap: wrap;
@@ -394,7 +465,6 @@
             gap: 40px;
             width: 100%;
         }
-
         .team-card {
             background-color: var(--bg-medium);
             border: 4px solid var(--accent-yellow);
@@ -403,33 +473,31 @@
             width: 300px;
             transition: all 0.1s ease-out;
         }
-
         .team-card img {
             width: 100%;
             height: 250px;
             object-fit: cover;
             border: 4px solid var(--accent-green);
         }
-
         .team-card h3 {
             color: var(--accent-pink);
             font-size: 1rem;
             margin-top: 20px;
             text-shadow: 2px 2px 0 var(--shadow-black);
         }
-
         .team-card:hover {
             transform: translate(-6px, -6px);
             box-shadow: 14px 14px 0px var(--shadow-black);
         }
 
-        /* --- Footer "Ramai" --- */
+        /* --- Footer --- */
         .footer-ramai {
-            background-color: var(--shadow-black);
+            /* [FIX] background-color DIHAPUS */
+            /* background-color: var(--shadow-black); */
             padding: 50px 20px;
-            border-top: 8px solid var(--accent-pink);
+            /* [FIX] border-top DIHAPUS */
+            /* border-top: 8px solid var(--accent-pink); */
         }
-
         .footer-content {
             display: flex;
             flex-wrap: wrap;
@@ -438,53 +506,40 @@
             max-width: 1000px;
             margin: 0 auto;
         }
-
         .footer-column {
             min-width: 180px;
             margin: 20px;
         }
-
         .footer-column h4 {
             font-size: 1.1rem;
             color: var(--accent-yellow);
             margin-bottom: 20px;
             text-shadow: 2px 2px 0 var(--bg-dark);
         }
-
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column li {
-            margin-bottom: 10px;
-        }
-
+        .footer-column ul { list-style: none; }
+        .footer-column li { margin-bottom: 10px; }
         .footer-column a {
             color: var(--text-light);
             text-decoration: none;
             font-size: 0.9rem;
             transition: all 0.2s;
-            cursor: pointer; /* Menunjukkan bisa diklik */
+            cursor: pointer; 
         }
-        
         .footer-column a::before {
             content: '>';
             color: var(--accent-pink);
             margin-right: 8px;
         }
-
         .footer-column a:hover {
             color: var(--accent-yellow);
             padding-left: 5px;
         }
-
         .pixel-divider {
             font-size: 1rem;
             color: var(--accent-green);
             margin: 30px auto;
             letter-spacing: 5px;
         }
-
         .created-by {
             margin-top: 30px;
             font-size: 1.2rem;
@@ -492,9 +547,9 @@
             animation: text-flicker 3s linear infinite;
         }
 
-        /* --- Modal (Popup) --- */
+        /* --- Modal Popup --- */
         .modal-overlay {
-            display: none; /* Sembunyi secara default */
+            display: none; 
             position: fixed;
             top: 0;
             left: 0;
@@ -507,7 +562,6 @@
             justify-content: center;
             padding: 20px;
         }
-        
         .modal-content {
             background: var(--bg-medium);
             border: 4px solid var(--accent-yellow);
@@ -520,27 +574,18 @@
             overflow-y: auto;
             text-align: left;
         }
-        
         .modal-content h2 {
             font-size: 1.5rem;
             margin-bottom: 20px;
             color: var(--accent-yellow);
         }
-        
         .modal-content p, .modal-content ul {
             font-size: 0.8rem;
             line-height: 1.7;
             margin-bottom: 15px;
         }
-        
-        .modal-content ul {
-            padding-left: 20px;
-        }
-        
-        .modal-content strong {
-            color: var(--accent-pink);
-        }
-        
+        .modal-content ul { padding-left: 20px; }
+        .modal-content strong { color: var(--accent-pink); }
         .modal-close {
             position: absolute;
             top: 10px;
@@ -552,14 +597,11 @@
             text-shadow: 3px 3px 0 var(--shadow-black);
             transition: transform 0.2s;
         }
-        
-        .modal-close:hover {
-            transform: scale(1.2);
-        }
+        .modal-close:hover { transform: scale(1.2); }
 
-        /* --- Tombol Kembali ke Atas --- */
+        /* --- Tombol Back to Top --- */
         .back-to-top {
-            display: none; /* Sembunyi by default */
+            display: none; 
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -583,7 +625,6 @@
             transform: translate(2px, 2px);
             box-shadow: 2px 2px 0 var(--shadow-black);
         }
-
 
         /* --- Keyframes Animasi --- */
         @keyframes pulse-shadow {
@@ -615,77 +656,81 @@
             100% { opacity: 1; text-shadow: 2px 2px 0 var(--shadow-black); }
         }
 
-        /* --- Responsif untuk Mobile (NAVBAR) --- */
+        /* --- Responsif Mobile --- */
         @media (max-width: 768px) {
             .navbar {
                 padding: 15px 20px;
+                justify-content: space-between; 
             }
-            .navbar-hamburger {
-                display: block; /* Tampilkan hamburger */
-            }
+            .navbar-hamburger { display: block; }
             .navbar-menu {
-                display: none; /* Sembunyikan menu desktop */
+                display: none; 
                 flex-direction: column;
                 width: 100%;
-                background-color: var(--bg-medium);
+                /* [FIX] background-color DIHAPUS */
+                /* background-color: rgba(68, 49, 90, 0.9); */ 
+                backdrop-filter: blur(5px);
                 position: absolute;
-                top: 79px; /* Sesuaikan dengan tinggi navbar */
+                top: 79px; 
                 left: 0;
                 padding: 10px 0;
-                box-shadow: 0 8px 0 var(--shadow-black);
-                border-top: 4px solid var(--shadow-black);
+                /* [FIX] box-shadow dan border-top DIHAPUS */
+                /* box-shadow: 0 8px 0 var(--shadow-black); */
+                /* border-top: 4px solid var(--shadow-black); */
             }
-            .navbar-menu.is-active {
-                display: flex; /* Tampilkan menu saat di-klik */
-            }
+            .navbar-menu.is-active { display: flex; }
             .navbar-menu a {
                 padding: 15px;
                 text-align: center;
-                border-bottom: 2px solid var(--bg-dark);
+                border: none; 
             }
-            .navbar-menu a:last-child {
-                border-bottom: none;
+            .navbar-menu a:hover {
+                transform: none; 
+                box-shadow: none;
+                background-color: var(--bg-dark); 
             }
-            
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            h2 {
-                font-size: 1.5rem;
-            }
+            .hero h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
             .footer-content {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
-            .footer-column {
-                text-align: center;
-            }
-            .discord-widget-container {
-                height: 400px;
-            }
-            .tutorial-grid {
-                grid-template-columns: 1fr; /* 1 kolom di HP */
+            .footer-column { text-align: center; }
+            .discord-widget-container { height: 400px; }
+            .tutorial-grid { grid-template-columns: 1fr; }
+            #cta-utama .pixel-btn {
+                font-size: 0.8rem; 
+                padding: 12px 18px;
             }
         }
     </style>
 </head>
-<body id="top"> <!-- ID "top" untuk tombol kembali ke atas -->
+<body id="top">
+
+    <!-- Pre-Loader -->
+    <div id="preloader">
+        <div class="loader"></div>
+        <p>Loading XyCloud...</p>
+    </div>
+
+    <!-- Video Background -->
+    <video autoplay muted loop id="video-bg">
+        <source src="https://cdn.discordapp.com/attachments/1408516723522666568/1433391679108550738/From_KlickPin_CF_Ghim_cua_Laura_Luna_tren_anima2d_trong_2025___Nhat_ky_nghe_thuat_Hinh_nen_ky_thuat_so_Hinh_anh.mp4?ex=69048587&is=69033407&hm=b8fcab9b786e229cb83d65ba70ea1570362669f54012600a3a97ba91032d15bb&" type="video/mp4">
+        Browser Anda tidak mendukung tag video.
+    </video>
 
     <!-- Navigasi -->
     <nav class="navbar">
         <div class="logo">XyCloud</div>
-        
-        <!-- Menu Desktop -->
         <div class="navbar-menu" id="navbar-menu">
-            <a href="#panduan">Panduan</a>
+            <a href="#panduan">Info Cloud PC</a>
             <a href="#bahan">Bahan & Tutor</a>
-            <a href="#toko">XyCloud Store</a>
+            <a href="#fitur">Fitur</a>
+            <a href="#faq">FAQ</a>
             <a href="#discord">Komunitas</a>
             <a href="#tim">Admin</a>
         </div>
-        
-        <!-- Tombol Hamburger Mobile -->
         <button class="navbar-hamburger" id="navbar-hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -695,41 +740,29 @@
 
     <!-- Hero Section -->
     <header class="hero container">
-        <!-- Logo XyCloud BARU -->
-        <img src="https://cdn.discordapp.com/attachments/1408516723522666568/1433335915882876979/Proyek_Baru_41__89404FF_-removebg-preview_1.png?ex=69045198&is=69030018&hm=cf1946b167347ec26c784754099becff1ba5d56f743df58f6199fc62d492002d&" alt="Logo XyCloud" class="hero-logo"
-             onerror="this.src='https://placehold.co/150x150/2c213a/f1fa8c?text=XyCloud'">
-        
-        <h1>Panduan Main FiveM di HP!</h1>
+        <img src="https://cdn.discordapp.com/attachments/1408516723522666568/1433335915882876979/Proyek_Baru_41__89404FF_-removebg-preview_1.png?ex=69045198&is=69030018&hm=cf1946b167347ec26c78454099becff1ba5d56f743df58f6199fc62d492002d&" alt="Logo XyCloud" class="hero-logo">
+        <h1 id="hero-title"></h1> 
         <p>Sewa PC Cloud & Main Game PC Berat Langsung Dari HP Kamu!</p>
     </header>
     
-    <!-- Bagian Panduan -->
-    <section id="panduan" class="guide-section">
-        <div class="container">
-            <h2>Gimana Caranya?</h2>
-            <div class="guide-steps">
-                <div class="guide-step">
-                    <h3>Langkah 1: Paham Kebutuhan</h3>
-                    <p>FiveM (GTA V Roleplay) adalah game PC berat. Kamu tidak bisa meng-install-nya langsung di HP. Kamu butuh PC asli yang menjalankannya.</p>
-                </div>
-                <div class="guide-step">
-                    <h3>Langkah 2: Solusi Cloud PC</h3>
-                    <p>Kamu bisa "Sewa PC" secara online! PC ini bisa diakses lewat HP pakai aplikasi remote seperti <strong>RDP, Parsec, Deeplink, Avica,</strong> dan lainnya.</p>
-                </div>
-                <div class="guide-step">
-                    <h3>Langkah 3: Sewa di XyCloud Store</h3>
-                    <p>Tempat terbaik untuk sewa PC spek tinggi dengan harga murah adalah di XyCloud Store. Aman, cepat, dan siap pakai untuk main FiveM!</p>
-                </div>
-            </div>
-        </div>
+    <!-- Quick Links / CTA Utama -->
+    <section id="cta-utama" class="container">
+         <a href="#" class="pixel-btn btn-green" target="_blank" rel="noopener noreferrer">
+            [$] Kunjungi Store!
+         </a>
+         <a href="https://discord.gg/3yHrmdKwxb" class="pixel-btn" target="_blank" rel="noopener noreferrer">
+            [D] Gabung Discord!
+         </a>
+         <a href="https://chat.whatsapp.com/Eo78e00ZCdo9jaaVsk4wV5?mode=wwt" class="pixel-btn btn-green" target="_blank" rel="noopener noreferrer">
+            [W] Gabung WhatsApp!
+         </a>
     </section>
 
     <!-- Bagian Bahan & Tutorial -->
-    <section id="bahan" class="container">
+    <section id="bahan" class="container content-section alt">
         <h2>Bahan & Tutorial</h2>
         <p style="font-size:0.9rem; margin-bottom: 30px;">Download aplikasi & tonton tutorial wajib ini!</p>
         
-        <!-- Grid Download Bahan -->
         <div class="bahan-grid">
             <div class="bahan-card">
                 <h3>Aplikasi Remote</h3>
@@ -747,94 +780,114 @@
         
         <h2 style="margin-top: 60px;">Video Tutorial Lengkap</h2>
         
-        <!-- Grid Video Tutorial BARU -->
         <div class="tutorial-grid">
             <div class="tutorial-card">
                 <h3>Tutorial Akun Discord</h3>
                 <iframe class="tutorial-video" src="https://www.youtube.com/embed/KAuhg-6kXhY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            
             <div class="tutorial-card">
                 <h3>Tutorial Akun Steam</h3>
                 <iframe class="tutorial-video" src="https://www.youtube.com/embed/4kPkifr2ZUI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-
             <div class="tutorial-card">
                 <h3>Tutorial On Mic Deeplink</h3>
                 <iframe class="tutorial-video" src="https://www.youtube.com/embed/0PY7c_1FaoM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-
             <div class="tutorial-card">
                 <h3>Tutorial Akun CFX.RE</h3>
-                <div class="video-placeholder">
-                    <p>Video Segera Hadir</p>
-                </div>
+                <div class="video-placeholder"><p>Video Segera Hadir</p></div>
             </div>
-
             <div class="tutorial-card">
                 <h3>Tutorial On Mic Android</h3>
-                <div class="video-placeholder">
-                    <p>Video Segera Hadir</p>
-                </div>
+                <div class="video-placeholder"><p>Video Segera Hadir</p></div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section id="toko" class="cta-section container">
-        <h2>Siap Main?</h2>
-        <p>Kunjungi Toko Kami Untuk Melihat Daftar PC & Harga Sewa!</p>
-        <!-- GANTI TANDA # DENGAN LINK TOKO ASLI ANDA -->
-        <a href="#" class="pixel-btn btn-green" target="_blank" rel="noopener noreferrer">
-            Kunjungi XyCloud Store!
-        </a>
+    <!-- Bagian Panduan -->
+    <section id="panduan" class="container content-section">
+        <h2>Info Penting Cloud PC & FiveM</h2>
+        <div class="guide-steps">
+            <div class="guide-step">
+                <h3>Apa itu Cloud PC?</h3>
+                <p>Cloud PC adalah <strong>Komputer/PC Fisik</strong> sungguhan (seperti di warnet) yang ditaruh di data center dan bisa kamu sewa per jam/harian. Kamu bisa mengakses PC ini dari jarak jauh (remote) pakai HP atau PC kentang kamu.</p>
+            </div>
+            <div class="guide-step">
+                <h3>Spek Minimum FiveM</h3>
+                <p>FiveM (GTA V) itu berat! Kamu butuh minimal:</p>
+                <ul>
+                    <li><strong>CPU:</strong> 4 Cores (Contoh: i5 Gen 4+)</li>
+                    <li><strong>RAM:</strong> 8GB (Rekomendasi 16GB)</li>
+                    <li><strong>GPU (VGA):</strong> Minimal 2GB VRAM (Contoh: GTX 750 Ti / 1050)</li>
+                </ul>
+                <p style="margin-top: 10px;">HP kamu tidak akan kuat, makanya kamu butuh sewa Cloud PC!</p>
+            </div>
+            <div class="guide-step">
+                <h3>Cara Kerjanya</h3>
+                <p>Sangat simpel:</p>
+                <ol style="padding-left: 20px; font-size: 0.9rem; margin-top: 10px;">
+                    <li>Sewa PC di XyCloud Store.</li>
+                    <li>Dapat data login (IP, User, Pass).</li>
+                    <li>Download aplikasi remote (Deeplink/Avica).</li>
+                    <li>Masukkan data login.</li>
+                    <li>Mainkan FiveM dari HP kamu!</li>
+                </ol>
+            </div>
+        </div>
     </section>
 
-    <!-- Features Section (Grid 5x5 = 25) -->
-    <section class="features-section">
-        <div class="container">
-            <h2>Kenapa XyCloud Store?</h2>
-            <div class="features-grid">
-                <!-- 1-5 -->
-                <div class="feature-box"><span>[!]</span><h3>Admin Fast Respon</h3></div>
-                <div class="feature-box"><span>[$]</span><h3>Harga Terjangkau</h3></div>
-                <div class="feature-box"><span>[S]</span><h3>Server Stabil 99.9%</h3></div>
-                <div class="feature-box"><span>[PC]</span><h3>Spek PC Kencang</h3></div>
-                <div class="feature-box"><span>[24]</span><h3>Online 24/7</h3></div>
-                <!-- 6-10 -->
-                <div class="feature-box"><span>[>]</span><h3>Setup Instan</h3></div>
-                <div class="feature-box"><span>[M]</span><h3>Support HP & PC</h3></div>
-                <div class="feature-box"><span>[DDS]</span><h3>Proteksi DDoS</h3></div>
-                <div class="feature-box"><span>[Pay]</span><h3>Banyak Metode Bayar</h3></div>
-                <div class="feature-box"><span>[Mic]</span><h3>Support V-Mic</h3></div>
-                <!-- 11-15 -->
-                <div class="feature-box"><span>[C]</span><h3>Komunitas Ramai</h3></div>
-                <div class="feature-box"><span>[A]</span><h3>Aman Terpercaya</h3></div>
-                <div class="feature-box"><span>[Bon]</span><h3>Bonus Topup</h3></div>
-                <div class="feature-box"><span>[SSD]</span><h3>Full SSD NVMe</h3></div>
-                <div class="feature-box"><span>[GPU]</span><h3>Spek GPU Asli</h3></div>
-                <!-- 16-20 (BARU) -->
-                <div class="feature-box"><span>[RAM]</span><h3>RAM Anti Penuh</h3></div>
-                <div class="feature-box"><span>[Lok]</span><h3>Lokasi Server ID</h3></div>
-                <div class="feature-box"><span>[Ping]</span><h3>Ping Rendah</h3></div>
-                <div class="feature-box"><span>[Panel]</span><h3>Panel Web Lengkap</h3></div>
-                <div class="feature-box"><span>[Sup]</span><h3>Support Teknis</h3></div>
-                <!-- 21-25 (BARU) -->
-                <div class="feature-box"><span>[Man]</span><h3>Terkelola Penuh</h3></div>
-                <div class="feature-box"><span>[Root]</span><h3>Akses Administrator</h3></div>
-                <div class="feature-box"><span>[Bebas]</span><h3>Bebas Install App</h3></div>
-                <div class="feature-box"><span>[Anti]</span><h3>Anti Lag</h3></div>
-                <div class="feature-box"><span>[Game]</span><h3>Game Pra-Install</h3></div>
-            </div>
+    <!-- Features Section (10 Fitur) -->
+    <section id="fitur" class="container content-section alt">
+        <h2>Kenapa XyCloud Store?</h2>
+        <div class="features-grid">
+            <div class="feature-box"><span>[!]</span><h3>Admin Fast Respon</h3></div>
+            <div class="feature-box"><span>[$]</span><h3>Harga Terjangkau</h3></div>
+            <div class="feature-box"><span>[S]</span><h3>Server Stabil 99.9%</h3></div>
+            <div class="feature-box"><span>[PC]</span><h3>Spek PC Kencang</h3></div>
+            <div class="feature-box"><span>[A]</span><h3>Aman Terpercaya</h3></div>
+            <div class="feature-box"><span>[SSD]</span><h3>Full SSD NVMe</h3></div>
+            <div class="feature-box"><span>[Pay]</span><h3>Banyak Metode Bayar</h3></div>
+            <div class="feature-box"><span>[Anti]</span><h3>Anti Lag (Ping ID)</h3></div>
+            <div class="feature-box"><span>[Bon]</span><h3>Bonus Topup</h3></div>
+            <div class="feature-box"><span>[24/7]</span><h3>Support Teknis 24/7</h3></div>
         </div>
     </section>
     
-    <!-- Live Discord Section -->
-    <section id="discord" class="discord-section container">
-        <h2>Komunitas Kami</h2>
+    <!-- FAQ Section -->
+    <section id="faq" class="container content-section">
+        <h2>FAQ (Tanya Jawab)</h2>
         
+        <div class="faq-item">
+            <div class="faq-question">Apakah ini beneran bisa main di HP?</div>
+            <div class="faq-answer">
+                <p>Ya, 100% bisa. Kamu tidak meng-install game di HP, tapi kamu "meremote" PC kencang milik XyCloud Store lewat HP kamu.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Apakah butuh internet kencang?</div>
+            <div class="faq-answer">
+                <p>Butuh internet yang STABIL. Kecepatan minimal 10-15 Mbps sudah cukup lancar untuk resolusi 720p. Yang penting sinyalnya stabil (tidak naik-turun).</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Bisa untuk main game selain FiveM?</div>
+            <div class="faq-answer">
+                <p>Tentu saja! Kamu bisa install Steam, Epic Games, dan main game lain seperti Valorant, Genshin Impact, Palworld, atau game PC berat lainnya.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Apakah data saya aman?</div>
+            <div class="faq-answer">
+                <p>Aman. Setiap Cloud PC bersifat pribadi. Setelah masa sewa kamu habis, PC akan di-reset total untuk penyewa berikutnya.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Live Discord Section -->
+    <section id="discord" class="container content-section alt">
+        <h2>Komunitas Kami</h2>
         <div class="discord-widget-container">
-            <!-- ID DISCORD BARU ANDA SUDAH DIMASUKKAN -->
             <iframe src="https://discord.com/widget?id=1306969580186370169&theme=dark" 
                     class="discord-widget"
                     allowtransparency="true" 
@@ -842,36 +895,22 @@
                     sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
             </iframe>
         </div>
-        
-         <!-- LINK DISCORD BARU -->
-         <a href="https://discord.gg/3yHrmdKwxb" class="pixel-btn" target="_blank" rel="noopener noreferrer">
-            Gabung Discord!
-         </a>
-         <!-- LINK WA BARU -->
-         <a href="https://chat.whatsapp.com/Eo78e00ZCdo9jaaVsk4wV5?mode=wwt" class="pixel-btn btn-green" target="_blank" rel="noopener noreferrer">
-            Gabung WhatsApp!
-         </a>
     </section>
 
-    <!-- Team Section (3 Admin) -->
-    <section id="tim" class="container">
+    <!-- Team Section -->
+    <section id="tim" class="container content-section">
         <h2>Admin Kami</h2>
         <div class="team-grid">
-            <!-- Kall -->
             <div class="team-card">
-                <img src="https://cdn.discordapp.com/attachments/1408516723522666568/1433331279377465476/51aa9fd8b13a382b67de57ec38601422.jpg?ex=69044d47&is=6902fbc7&hm=5d81b25681e3516e396242827a9fdc93a5f5e299cbb49be2f84b21b856063074&" alt="Admin Kall"
+                <img src="https://cdn.discordapp.com/attachments/1408516723522666568/1433331279377465476/51aa9fdb13a382b67de57ec38601422.jpg?ex=69044d47&is=6902fbc7&hm=5d81b25681e3516e396242827a9fdc93a5f5e299cbb49be2f84b21b856063074&" alt="Admin Kall"
                      onerror="this.src='https://placehold.co/300x250/2c213a/f1fa8c?text=Kall'">
                 <h3>Kall - Owner</h3>
             </div>
-            
-            <!-- Dwingi -->
             <div class="team-card">
                 <img src="https://cdn.discordapp.com/attachments/1408516723522666568/1433331279700688906/14739032a0545baf6602719f601a690a.jpg?ex=69044d47&is=6902fbc7&hm=6d032e1f5c10f1e57b58ea73b84900ce3d263594e0f4fbd7ea32e1f24d425952&" alt="Admin Dwingi"
-                     onerror="this.src='https://placehold.co/300x250/2c213a/ff79c6?text=Dwingi'">
+                     onerror="this.src='httpss://placehold.co/300x250/2c213a/ff79c6?text=Dwingi'">
                 <h3>Dwingi - Admin Support</h3>
             </div>
-
-            <!-- Dlii (Foto BARU) -->
             <div class="team-card">
                 <img src="https://cdn.discordapp.com/attachments/1408516723522666568/1433331280405073960/d724132e5b80fdf62f8ca225f559ba3e.jpg?ex=69044d47&is=6902fbc7&hm=b20ba97718176c398bf49f54afd7d2aaa059b4a6d688fe0a1296713379f243a9&" alt="Admin Dlii"
                      onerror="this.src='https://placehold.co/300x250/44315a/f0f0f0?text=Dlii'">
@@ -880,45 +919,38 @@
         </div>
     </section>
 
-    <!-- Footer "Ramai" -->
+    <!-- Footer -->
     <footer class="footer-ramai">
         <div class="footer-content">
             <div class="footer-column">
                 <h4>Navigasi</h4>
                 <ul>
                     <li><a href="#">Beranda</a></li>
-                    <li><a href="#panduan">Panduan</a></li>
-                    <li><a href="#toko">Toko</a></li>
+                    <li><a href="#panduan">Info Cloud PC</a></li>
+                    <li><a href="#bahan">Tutorial</a></li>
                     <li><a href="#discord">Komunitas</a></li>
                 </ul>
             </div>
-            
             <div class="footer-column">
                 <h4>Sosial</h4>
                 <ul>
-                    <li><a href="https://discord.gg/3yHrmdKwxb" target="_blank" rel="noopener noreferrer">Discord</a></li>
-                    <li><a href="https://chat.whatsapp.com/Eo78e00ZCdo9jaaVsk4wV5?mode=wwt" target="_blank" rel="noopener noreferrer">WhatsApp</a></li> <!-- LINK WA BARU -->
+                    <li><a href="https...discord.gg/3yHrmdKwxb" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                    <li><a href="https...chat.whatsapp.com/Eo78e00ZCdo9jaaVsk4wV5?mode=wwt" target="_blank" rel="noopener noreferrer">WhatsApp</a></li> 
                     <li><a href="#">Instagram</a></li>
                     <li><a href="#">TikTok</a></li>
                 </ul>
             </div>
-
             <div class="footer-column">
                 <h4>Legal (Klik untuk Buka)</h4>
                 <ul>
-                    <!-- Link ini akan memicu modal -->
                     <li><a class="legal-link" data-type="privacy">Kebijakan Privasi</a></li>
                     <li><a class="legal-link" data-type="tos">Syarat Layanan</a></li>
                     <li><a class="legal-link" data-type="cookie">Penggunaan Cookie</a></li>
                 </ul>
             </div>
         </div>
-        
         <div class="pixel-divider">...---===---...</div>
-        
-        <div class="created-by">
-            Created By Kalll
-        </div>
+        <div class="created-by">Created By Kalll</div>
     </footer>
     
     <!-- Modal (Popup) HTML -->
@@ -931,94 +963,105 @@
     </div>
 
     <!-- Tombol Kembali ke Atas -->
-    <a href="#top" class="back-to-top" id="back-to-top" title="Kembali ke atas">
-        ^
-    </a>
+    <a href="#top" class="back-to-top" id="back-to-top" title="Kembali ke atas">^</a>
 
-    <!-- JavaScript untuk Modal, Navbar & Tombol Atas -->
+    <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- Konten Legal Versi Lengkap ---
+            // --- Pre-Loader ---
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                preloader.style.transition = 'opacity 0.5s ease';
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500); 
+            });
+
+            // --- Efek Typing ---
+            const heroTitle = document.getElementById('hero-title');
+            const textToType = "Panduan Main FiveM di HP!";
+            let i = 0;
+            const typeSpeed = 100; 
+            const cursorSpan = document.createElement('span');
+            cursorSpan.className = 'cursor';
+            cursorSpan.innerHTML = '&nbsp;';
+            heroTitle.appendChild(cursorSpan);
+
+            function typeWriter() {
+                if (i < textToType.length) {
+                    heroTitle.insertBefore(document.createTextNode(textToType.charAt(i)), cursorSpan);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    cursorSpan.classList.remove('typing');
+                }
+            }
+            setTimeout(typeWriter, 1000); 
+
+            // --- FAQ Accordion ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    item.classList.toggle('active');
+                });
+            });
+
+            // --- Animasi Scroll Reveal ---
+            const sections = document.querySelectorAll('.content-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1 }); 
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+
+            // --- Logika Modal Legal ---
             const legalText = {
-                privacy: {
-                    title: "Kebijakan Privasi",
-                    content: `
+                privacy: { title: "Kebijakan Privasi", content: `
                         <p><strong>Efektif per 30 Oktober 2025</strong></p>
                         <p>Terima kasih telah mengunjungi XyCloud Store. Kami berkomitmen untuk melindungi privasi informasi pribadi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda saat Anda mengunjungi situs web kami.</p>
-                        
                         <h3>Informasi yang Kami Kumpulkan</h3>
-                        <p>Kami dapat mengumpulkan informasi pribadi yang Anda berikan secara sukarela kepada kami, seperti:</p>
-                        <ul>
-                            <li>Nama</li>
-                            <li>Alamat Email</li>
-                            <li>Nomor Telepon / WhatsApp</li>
-                            <li>Informasi Pembayaran (dikelola oleh payment gateway pihak ketiga kami)</li>
-                        </ul>
-                        <p>Kami juga dapat mengumpulkan informasi non-pribadi secara otomatis saat Anda menavigasi situs, seperti alamat IP, jenis browser, dan data penggunaan.</p>
-
+                        <p>Kami dapat mengumpulkan informasi pribadi yang Anda berikan secara sukarela kepada kami, seperti: Nama, Alamat Email, Nomor Telepon / WhatsApp, Informasi Pembayaran.</p>
                         <h3>Bagaimana Kami Menggunakan Informasi Anda</h3>
-                        <p>Informasi Anda digunakan untuk:</p>
-                        <ul>
-                            <li>Menyediakan, mengoperasikan, dan memelihara layanan kami (Cloud PC).</li>
-                            <li>Memproses transaksi Anda dan mengirimkan konfirmasi.</li>
-                            <li>Memberikan dukungan pelanggan dan merespons pertanyaan Anda.</li>
-                            <li>Mendeteksi dan mencegah penipuan atau aktivitas ilegal.</li>
-                        </ul>
-
+                        <p>Informasi Anda digunakan untuk: Menyediakan layanan kami, Memproses transaksi, Memberikan dukungan pelanggan, Mencegah penipuan.</p>
                         <h3>Keamanan Data</h3>
                         <p>Kami menerapkan langkah-langkah keamanan yang wajar untuk melindungi informasi pribadi Anda. Namun, tidak ada metode transmisi melalui internet atau penyimpanan elektronik yang 100% aman.</p>
-                    `
-                },
-                tos: {
-                    title: "Syarat & Ketentuan Layanan (ToS)",
-                    content: `
-                        <p>Selamat datang di XyCloud Store. Dengan mengakses atau menggunakan layanan kami (termasuk sewa Cloud PC), Anda setuju untuk terikat oleh Syarat & Ketentuan berikut:</p>
-                        
+                    ` },
+                tos: { title: "Syarat Layanan (ToS)", content: `
+                        <p>Selamat datang di XyCloud Store. Dengan mengakses atau menggunakan layanan kami, Anda setuju untuk terikat oleh Syarat & Ketentuan berikut:</p>
                         <h3>1. Penggunaan Layanan</h3>
-                        <p>Anda setuju untuk menggunakan layanan kami hanya untuk tujuan yang sah dan tidak melanggar hukum. Aktivitas yang DILARANG KERAS meliputi, namun tidak terbatas pada:</p>
-                        <ul>
-                            <li>Aktivitas ilegal (Hacking, Carding, Phishing, DDoS).</li>
-                            <li>Penambangan (Mining) Cryptocurrency.</li>
-                            <li>Menjalankan botnet atau lalu lintas berbahaya.</li>
-                            <li>Penyebaran malware atau virus.</li>
-                            <li>Mencoba membobol sistem XyCloud Store.</li>
-                        </ul>
-
+                        <p>Aktivitas yang DILARANG KERAS meliputi: Aktivitas ilegal (Hacking, Carding, Phishing, DDoS), Penambangan (Mining) Cryptocurrency, Menjalankan botnet, Penyebaran malware.</p>
                         <h3>2. Akun dan Pembayaran</h3>
-                        <p>Anda bertanggung jawab untuk menjaga keamanan akun Anda. Semua pembayaran bersifat final dan tidak dapat dikembalikan (non-refundable) kecuali ditentukan lain dalam kebijakan garansi kami.</p>
-
+                        <p>Anda bertanggung jawab untuk menjaga keamanan akun Anda. Semua pembayaran bersifat final dan non-refundable.</p>
                         <h3>3. Pelanggaran dan Penghentian</h3>
-                        <p><strong>Pelanggaran berat terhadap ToS ini (terutama poin 1) akan mengakibatkan penghentian layanan (ban) secara permanen TANPA pemberitahuan dan TANPA pengembalian dana (refund).</strong></p>
-                        
+                        <p><strong>Pelanggaran berat terhadap ToS ini akan mengakibatkan penghentian layanan (ban) permanen TANPA refund.</strong></p>
                         <h3>4. Batasan Tanggung Jawab</h3>
-                        <p>XyCloud Store tidak bertanggung jawab atas kehilangan data apa pun di dalam layanan Cloud PC Anda. Anda bertanggung jawab penuh untuk melakukan backup data penting Anda sendiri.</p>
-                    `
-                },
-                cookie: {
-                    title: "Kebijakan Cookie",
-                    content: `
+                        <p>XyCloud Store tidak bertanggung jawab atas kehilangan data apa pun. Anda bertanggung jawab penuh untuk backup data Anda.</p>
+                    ` },
+                cookie: { title: "Kebijakan Cookie", content: `
                         <p>Situs web XyCloud Store menggunakan "cookie" untuk meningkatkan pengalaman pengguna Anda.</p>
-                        
                         <h3>Apa itu Cookie?</h3>
-                        <p>Cookie adalah file teks kecil yang ditempatkan di hard drive Anda oleh server halaman web. Cookie tidak dapat digunakan untuk menjalankan program atau mengirimkan virus ke komputer Anda.</p>
-
+                        <p>Cookie adalah file teks kecil yang ditempatkan di hard drive Anda oleh server halaman web.</p>
                         <h3>Bagaimana Kami Menggunakan Cookie</h3>
-                        <p>Kami menggunakan cookie untuk:</p>
-                        <ul>
-                            <li>Mengingat preferensi Anda (misalnya, login sesi).</li>
-                            <li>Menganalisis lalu lintas situs untuk meningkatkan layanan kami.</li>
-                        </ul>
-                        
+                        <p>Kami menggunakan cookie untuk: Mengingat preferensi Anda, Menganalisis lalu lintas situs.</p>
                         <h3>Pilihan Anda</h3>
-                        <p>Anda memiliki kemampuan untuk menerima atau menolak cookie. Sebagian besar browser Web secara otomatis menerima cookie, tetapi Anda biasanya dapat memodifikasi pengaturan browser Anda untuk menolak cookie jika Anda mau.</p>
-
-                        <p>Dengan melanjutkan penggunaan situs kami, Anda menyetujui penggunaan cookie kami.</p>
-                    `
-                }
+                        <p>Anda memiliki kemampuan untuk menerima atau menolak cookie di pengaturan browser Anda.</p>
+                    ` }
             };
-            
-            // --- Logika Modal (Popup) ---
             const modalOverlay = document.getElementById('modal-overlay');
             const modalTitle = document.getElementById('modal-title');
             const modalTextContainer = document.getElementById('modal-text-container');
@@ -1033,34 +1076,25 @@
                     modalOverlay.style.display = 'flex';
                 }
             };
-            
-            const closeModal = () => {
-                modalOverlay.style.display = 'none';
-            };
-            
+            const closeModal = () => { modalOverlay.style.display = 'none'; };
             legalLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault(); F
+                    e.preventDefault(); 
                     const type = e.target.getAttribute('data-type');
                     openModal(type);
                 });
             });
-            
             modalClose.addEventListener('click', closeModal);
             modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) {
-                    closeModal();
-                }
+                if (e.target === modalOverlay) closeModal();
             });
 
             // --- Logika Navbar Hamburger ---
             const hamburger = document.getElementById('navbar-hamburger');
             const menu = document.getElementById('navbar-menu');
-
             hamburger.addEventListener('click', () => {
                 menu.classList.toggle('is-active');
             });
-            
             menu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     if (menu.classList.contains('is-active')) {
@@ -1071,9 +1105,7 @@
 
             // --- Logika Tombol Kembali ke Atas ---
             const backToTopButton = document.getElementById('back-to-top');
-            
             window.onscroll = () => {
-                // Tampilkan tombol jika user scroll ke bawah 300px
                 if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
                     backToTopButton.style.display = 'block';
                 } else {
