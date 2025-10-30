@@ -242,6 +242,8 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px; 
+            /* [FIX] Tambah margin bawah agar tidak dempet */
+            margin-bottom: 40px; 
         }
         .guide-step {
             background: var(--bg-dark);
@@ -372,7 +374,7 @@
             font-size: 0.9rem;
         }
 
-        /* --- FAQ Accordion --- */
+        /* --- FAQ Accordion & Panduan Lengkap --- */
         .faq-item {
             background: var(--bg-dark);
             border: 4px solid var(--accent-pink);
@@ -382,7 +384,7 @@
         }
         .faq-question {
             padding: 15px 20px;
-            font-size: 0.8rem; 
+            font-size: 0.9rem; /* [FIX] Perkecil font */
             color: var(--accent-yellow);
             cursor: pointer;
             position: relative;
@@ -398,16 +400,29 @@
         }
         .faq-answer {
             padding: 0 20px;
-            font-size: 0.8rem; 
+            font-size: 0.8rem; /* [FIX] Perkecil font */
             line-height: 1.7;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out, padding 0.3s ease-out;
         }
         .faq-item.active .faq-answer {
-            max-height: 300px; 
-            padding: 15px 20px;
+            max-height: 10000px; /* [FIX] Buat sangat besar untuk panduan */
+            padding: 30px 20px; /* Tambah padding atas-bawah */
         }
+        /* [FIX] Style khusus untuk panduan lengkap */
+        #panduan-lengkap .faq-question {
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        #panduan-lengkap .faq-answer h2 {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+         #panduan-lengkap .faq-answer h2:first-child {
+            margin-top: 0;
+        }
+
 
         /* --- Discord --- */
         .discord-widget-container {
@@ -606,6 +621,41 @@
             transform: translate(2px, 2px);
             box-shadow: 2px 2px 0 var(--shadow-black);
         }
+        
+        /* --- [FITUR BARU] Maintenance Mode --- */
+        #maintenance-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        #maintenance-overlay h1 {
+            font-size: 2rem;
+            color: var(--accent-yellow);
+            margin-bottom: 20px;
+        }
+        #maintenance-overlay p {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+        /* Tampilkan overlay jika body punya class .maintenance-active */
+        body.maintenance-active #maintenance-overlay {
+            display: flex;
+        }
+        /* Sembunyikan semua elemen lain jika maintenance active */
+        body.maintenance-active > :not(#maintenance-overlay) {
+            display: none !important;
+        }
+
 
         /* --- Keyframes Animasi --- */
         @keyframes pulse-shadow {
@@ -675,6 +725,9 @@
             .calculator-grid {
                  grid-template-columns: 1fr;
             }
+            #panduan-lengkap .faq-question {
+                font-size: 1rem;
+            }
             
             .footer-content {
                 flex-direction: column;
@@ -692,6 +745,18 @@
     </style>
 </head>
 <body id="top">
+
+    <!-- [FITUR BARU] Maintenance Overlay -->
+    <div id="maintenance-overlay">
+        <h1>Situs Sedang Maintenance</h1>
+        <p>Kami akan segera kembali. Cek info di komunitas kami:</p>
+        <a href="https://discord.gg/3yHrmdKwxb" class="pixel-btn" target="_blank" rel="noopener noreferrer">
+            [D] Gabung Discord!
+         </a>
+         <a href="https://chat.whatsapp.com/Eo78e00ZCdo9jaaVsk4wV5?mode=wwt" class="pixel-btn btn-green" target="_blank" rel="noopener noreferrer">
+            [W] Gabung WhatsApp!
+         </a>
+    </div>
 
     <!-- Popup Selamat Datang -->
     <div class="modal-overlay" id="welcome-popup">
@@ -715,9 +780,8 @@
     <nav class="navbar">
         <div class="logo">XyCloud</div>
         <div class="navbar-menu" id="navbar-menu">
-            <!-- [LAYOUT BARU] -->
-            <a href="#bahan">Bahan & Tutor</a>
-            <a href="#panduan">Info Cloud PC</a>
+            <!-- [FIX] Link Navbar Dirapikan -->
+            <a href="#panduan-lengkap">Panduan Lengkap</a>
             <a href="#kalkulator">Cek Spek</a> 
             <a href="#faq">FAQ</a>
             <a href="#discord">Komunitas</a>
@@ -732,9 +796,8 @@
 
     <!-- Hero Section -->
     <header class="hero container">
-        <img src="https://cdn.discordapp.com/attachments/1408516723522666568/1433335915882876979/Proyek_Baru_41__89404FF_-removebg-preview_1.png?ex=69045198&is=69030018&hm=cf1946b167347ec26c784754099becff1ba5d56f743df58f6199fc62d492002d&" alt="Logo XyCloud" class="hero-logo">
+        <img src="https://cdn.discordapp.com/attachments/1408516723522666568/1433335915882876979/Proyek_Baru_41__89404FF_-removebg-preview_1.png?ex=69045198&is=69030018&hm=cf1946b167347ec26c78454099becff1ba5d56f743df58f6199fc62d492002d&" alt="Logo XyCloud" class="hero-logo">
         <h1 id="hero-title"></h1> 
-        <!-- [KLARIFIKASI TEKS] -->
         <p>Panduan Sewa PC Cloud & Main Game PC Berat Langsung Dari HP Kamu!</p>
     </header>
     
@@ -751,107 +814,111 @@
          </a>
     </section>
 
-    <!-- [LAYOUT BARU] Bahan & Tutorial Pindah ke atas -->
-    <section id="bahan" class="container content-section alt">
-        <h2>Gudang Tutorial</h2>
-        <p style="font-size:0.8rem; margin-bottom: 30px;">Download aplikasi & tonton tutorial wajib ini!</p>
-        
-        <div class="bahan-grid">
-            <div class="bahan-card">
-                <h3>Aplikasi Remote</h3>
-                <p>Pilih salah satu untuk menyambungkan ke PC:</p>
-                <a href="https://play.google.com/store/apps/details?id=cloud.deeplink" class="pixel-btn btn-small btn-green" target="_blank" rel="noopener noreferrer">Deeplink (Android)</a>
-                <a href="https://www.avica.com/downloads/" class="pixel-btn btn-small btn-green" target="_blank" rel="noopener noreferrer">Avica (PC/HP)</a>
-            </div>
-            <div class="bahan-card">
-                <h3>Aplikasi On Mic</h3>
-                <p>Biar bisa ngobrol di dalam game (Roleplay):</p>
-                <a href="https://audiorelay.net/downloads" class="pixel-btn btn-small btn-green" target="_blank" rel="noopener noreferrer">Audio Relay</a>
-                <a href="https://play.google.com/store/apps/details?id=com.zerotier.one" class="pixel-btn btn-small btn-green" target="_blank" rel="noopener noreferrer">Zerotier (Android)</a>
-            </div>
-            <div class="bahan-card">
-                <h3>Alternatif Gratisan</h3>
-                <p>Bisa dicoba, tapi mungkin ada antrian atau batasan waktu:</p>
-                <a href="https://play.google.com/store/apps/details?id=com.joyark.cloudgames.community" class="pixel-btn btn-small" target="_blank" rel="noopener noreferrer">JoyArk (Android)</a>
-                <a href="https://play.google.com/store/apps/details?id=com.lingwoyun.limore" class="pixel-btn btn-small" target="_blank" rel="noopener noreferrer">Limore (Android)</a>
-            </div>
-        </div>
-        
-        <div class="tutorial-grid">
-            <div class="tutorial-card">
-                <h3>Tutorial Akun Discord</h3>
-                <iframe class="tutorial-video" src="https://www.youtube.com/embed/KAuhg-6kXhY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="tutorial-card">
-                <h3>Tutorial Akun Steam</h3>
-                <iframe class="tutorial-video" src="https://www.youtube.com/embed/4kPkifr2ZUI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="tutorial-card">
-                <h3>Tutorial On Mic Deeplink</h3>
-                <iframe class="tutorial-video" src="https://www.youtube.com/embed/0PY7c_1FaoM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="tutorial-card">
-                <h3>Tutorial Akun CFX.RE</h3>
-                <div class="video-placeholder"><p>Video Segera Hadir</p></div>
-            </div>
-            <div class="tutorial-card">
-                <h3>Tutorial On Mic Android</h3>
-                <div class="video-placeholder"><p>Video Segera Hadir</p></div>
-            </div>
-            <div class="tutorial-card">
-                <h3>Cara Install FiveM</h3>
-                <div class="video-placeholder"><p>Video Segera Hadir</p></div>
-            </div>
-            <div class="tutorial-card">
-                <h3>Setting Grafik FiveM</h3>
-                <div class="video-placeholder"><p>Video Segera Hadir</p></div>
-            </div>
-            <div class="tutorial-card">
-                <h3>Cara Masuk Server RP</h3>
-                <div class="video-placeholder"><p>Video Segera Hadir</p></div>
+    <!-- [FITUR BARU] Panduan Lengkap (Digabung) -->
+    <section id="panduan-lengkap" class="container content-section">
+        <div class="faq-item active"> <!-- Dibuat 'active' agar default-nya terbuka -->
+            <div class="faq-question">[KLIK] Buka Panduan Lengkap & Download Bahan</div>
+            <div class="faq-answer">
+                
+                <!-- Konten Panduan -->
+                <h2>Info Penting Cloud PC & FiveM</h2>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <h3>Apa itu Cloud PC?</h3>
+                        <p>Cloud PC adalah <strong>Komputer/PC Fisik</strong> sungguhan (seperti di warnet) yang ditaruh di data center dan bisa kamu sewa per jam/harian. Kamu bisa mengakses PC ini dari jarak jauh (remote) pakai HP atau PC kentang kamu.</p>
+                    </div>
+                    <div class="guide-step">
+                        <h3>Spek Minimum FiveM</h3>
+                        <p>FiveM (GTA V) itu berat! Kamu butuh minimal:</p>
+                        <ul>
+                            <li><strong>CPU:</strong> 4 Cores (Contoh: i5 Gen 4+)</li>
+                            <li><strong>RAM:</strong> 8GB (Rekomendasi 16GB)</li>
+                            <li><strong>GPU (VGA):</strong> Minimal 2GB VRAM (Contoh: GTX 750 Ti / 1050)</li>
+                        </ul>
+                        <p style="margin-top: 10px;">HP kamu tidak akan kuat, makanya kamu butuh sewa Cloud PC!</p>
+                    </div>
+                    <div class="guide-step">
+                        <h3>Bisa Pakai PC Kentang?</h3>
+                        <p><strong>SANGAT BISA!</strong> Itu tujuan utama Cloud PC.</p>
+                        <p style="margin-top: 10px;">Selama PC/Laptop kentang kamu bisa buka browser atau aplikasi remote (Avica), kamu sudah bisa main. Semua game berat dijalankan di server Cloud.</p>
+                        <p style="margin-top: 10px;"><strong>Tanpa VGA?</strong> Tetap bisa, selama CPU kamu ada 'Integrated Graphics' (Intel HD/UHD). PC kamu cuma buat ngeremote.</p>
+                    </div>
+                    <div class="guide-step">
+                        <h3>Cara Kerjanya</h3>
+                        <p>Sangat simpel:</p>
+                        <ol style="padding-left: 20px; font-size: 0.8rem; margin-top: 10px;">
+                            <li>Sewa PC dari store rekomendasi (Contoh: XyCloud Store).</li>
+                            <li>Dapat data login (IP, User, Pass).</li>
+                            <li>Download aplikasi remote (Deeplink/Avica).</li>
+                            <li>Masukkan data login.</li>
+                            <li>Mainkan FiveM dari HP kamu!</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- Konten Bahan -->
+                <h2 style="margin-top: 60px;">Gudang Tutorial & Download Bahan</h2>
+                <p style="font-size:0.8rem; margin-bottom: 30px;">Download aplikasi & tonton tutorial wajib ini!</p>
+                <div class="bahan-grid">
+                    <div class="bahan-card">
+                        <h3>Aplikasi Remote</h3>
+                        <p>Pilih salah satu untuk menyambungkan ke PC:</p>
+                        <a href="https://play.google.com/store/apps/details?id=cloud.deeplink" class="pixel-btn btn-small btn-green" target="_blank" rel="noopener noreferrer">Deeplink (Android)</a>
+                        <a href="https://www.avica.com/downloads/" class="pixel-btn btn-small btn-green" target="_blank" rel="noopener noreferrer">Avica (PC/HP)</a>
+                    </div>
+                    <div class="bahan-card">
+                        <h3>Aplikasi On Mic</h3>
+                        <p>Biar bisa ngobrol di dalam game (Roleplay):</p>
+                        <a href="https://audiorelay.net/downloads" class="pixel-btn btn-small btn-green" target="_blank" rel="noopener noreferrer">Audio Relay</a>
+                        <a href="https://play.google.com/store/apps/details?id=com.zerotier.one" class="pixel-btn btn-small btn-green" target="_blank" rel="noopener noreferrer">Zerotier (Android)</a>
+                    </div>
+                    <div class="bahan-card">
+                        <h3>Alternatif Gratisan</h3>
+                        <p>Bisa dicoba, tapi mungkin ada antrian atau batasan waktu:</p>
+                        <a href="https://play.google.com/store/apps/details?id=com.joyark.cloudgames.community" class="pixel-btn btn-small" target="_blank" rel="noopener noreferrer">JoyArk (Android)</a>
+                        <a href="https://play.google.com/store/apps/details?id=com.lingwoyun.limore" class="pixel-btn btn-small" target="_blank" rel="noopener noreferrer">Limore (Android)</a>
+                    </div>
+                </div>
+                
+                <div class="tutorial-grid">
+                    <div class="tutorial-card">
+                        <h3>Tutorial Akun Discord</h3>
+                        <iframe class="tutorial-video" src="https://www.youtube.com/embed/KAuhg-6kXhY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="tutorial-card">
+                        <h3>Tutorial Akun Steam</h3>
+                        <iframe class="tutorial-video" src="https://www.youtube.com/embed/4kPkifr2ZUI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="tutorial-card">
+                        <h3>Tutorial On Mic Deeplink</h3>
+                        <iframe class="tutorial-video" src="https://www.youtube.com/embed/0PY7c_1FaoM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="tutorial-card">
+                        <h3>Tutorial Akun CFX.RE</h3>
+                        <div class="video-placeholder"><p>Video Segera Hadir</p></div>
+                    </div>
+                    <div class="tutorial-card">
+                        <h3>Tutorial On Mic Android</h3>
+                        <div class="video-placeholder"><p>Video Segera Hadir</p></div>
+                    </div>
+                    <div class="tutorial-card">
+                        <h3>Cara Install FiveM</h3>
+                        <div class="video-placeholder"><p>Video Segera Hadir</p></div>
+                    </div>
+                    <div class="tutorial-card">
+                        <h3>Setting Grafik FiveM</h3>
+                        <div class="video-placeholder"><p>Video Segera Hadir</p></div>
+                    </div>
+                    <div class="tutorial-card">
+                        <h3>Cara Masuk Server RP</h3>
+                        <div class="video-placeholder"><p>Video Segera Hadir</p></div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Bagian Panduan -->
-    <section id="panduan" class="container content-section">
-        <h2>Info Penting Cloud PC & FiveM</h2>
-        <div class="guide-steps">
-            <div class="guide-step">
-                <h3>Apa itu Cloud PC?</h3>
-                <p>Cloud PC adalah <strong>Komputer/PC Fisik</strong> sungguhan (seperti di warnet) yang ditaruh di data center dan bisa kamu sewa per jam/harian. Kamu bisa mengakses PC ini dari jarak jauh (remote) pakai HP atau PC kentang kamu.</p>
-            </div>
-            <div class="guide-step">
-                <h3>Spek Minimum FiveM</h3>
-                <p>FiveM (GTA V) itu berat! Kamu butuh minimal:</p>
-                <ul>
-                    <li><strong>CPU:</strong> 4 Cores (Contoh: i5 Gen 4+)</li>
-                    <li><strong>RAM:</strong> 8GB (Rekomendasi 16GB)</li>
-                    <li><strong>GPU (VGA):</strong> Minimal 2GB VRAM (Contoh: GTX 750 Ti / 1050)</li>
-                </ul>
-                <p style="margin-top: 10px;">HP kamu tidak akan kuat, makanya kamu butuh sewa Cloud PC!</p>
-            </div>
-            <div class="guide-step">
-                <h3>Bisa Pakai PC Kentang?</h3>
-                <p><strong>SANGAT BISA!</strong> Itu tujuan utama Cloud PC.</p>
-                <p style="margin-top: 10px;">Selama PC/Laptop kentang kamu bisa buka browser atau aplikasi remote (Avica), kamu sudah bisa main. Semua game berat dijalankan di server Cloud.</p>
-                <p style="margin-top: 10px;"><strong>Tanpa VGA?</strong> Tetap bisa, selama CPU kamu ada 'Integrated Graphics' (Intel HD/UHD). PC kamu cuma buat ngeremote.</p>
-            </div>
-            <div class="guide-step">
-                <h3>Cara Kerjanya</h3>
-                <p>Sangat simpel:</p>
-                <ol style="padding-left: 20px; font-size: 0.8rem; margin-top: 10px;">
-                    <!-- [KLARIFIKASI TEKS] -->
-                    <li>Sewa PC dari store rekomendasi (Contoh: XyCloud Store).</li>
-                    <li>Dapat data login (IP, User, Pass).</li>
-                    <li>Download aplikasi remote (Deeplink/Avica).</li>
-                    <li>Masukkan data login.</li>
-                    <li>Mainkan FiveM dari HP kamu!</li>
-                </ol>
-            </div>
-        </div>
-    </section>
-    
     <!-- Kalkulator FPS Section -->
     <section id="kalkulator" class="container content-section alt">
         <h2>Kalkulator FPS FiveM (Estimasi)</h2>
@@ -861,7 +928,6 @@
             <div class="calc-input-group">
                 <label for="cpu-select">CPU Kamu:</label>
                 <select id="cpu-select">
-                    <!-- [UPDATE] Opsi ditambah -->
                     <option value="verylow">Intel Celeron / Athlon (Sangat Kentang)</option>
                     <option value="low">Intel Core i3 / Ryzen 3 (Lama)</option>
                     <option value="medium">Intel Core i5 / Ryzen 5 (Gen 4+)</option>
@@ -872,7 +938,6 @@
             <div class="calc-input-group">
                 <label for="gpu-select">VGA/GPU Kamu:</label>
                 <select id="gpu-select">
-                    <!-- [UPDATE] Opsi ditambah -->
                     <option value="igpu">Intel HD/UHD (Tanpa VGA)</option>
                     <option value="low-nvidia">Nvidia GTX 750 / 950 / 1030</option>
                     <option value="low-amd">AMD RX 550 / 560</option>
@@ -883,7 +948,6 @@
             <div class="calc-input-group">
                 <label for="ram-select">RAM Kamu:</label>
                 <select id="ram-select">
-                    <!-- [UPDATE] Opsi ditambah -->
                     <option value="2gb">2 GB (Tidak akan bisa)</option>
                     <option value="4gb">4 GB (Sangat Kurang)</option>
                     <option value="8gb">8 GB (Minimal)</option>
@@ -907,7 +971,6 @@
         <div class="faq-item">
             <div class="faq-question">Apakah ini beneran bisa main di HP?</div>
             <div class="faq-answer">
-                <!-- [KLARIFIKASI TEKS] -->
                 <p>Ya, 100% bisa. Kamu tidak meng-install game di HP, tapi kamu "meremote" PC kencang milik provider (seperti XyCloud) lewat HP kamu.</p>
             </div>
         </div>
@@ -974,8 +1037,8 @@
                 <h4>Navigasi</h4>
                 <ul>
                     <li><a href="#">Beranda</a></li>
-                    <li><a href="#panduan">Info Cloud PC</a></li>
-                    <li><a href="#bahan">Tutorial</a></li>
+                    <li><a href="#panduan-lengkap">Panduan</a></li>
+                    <li><a href="#kalkulator">Cek Spek</a></li>
                     <li><a href="#discord">Komunitas</a></li>
                 </ul>
             </div>
@@ -1015,14 +1078,24 @@
 
     <!-- JavaScript -->
     <script>
+        // --- [FITUR BARU] MAINTENANCE MODE ---
+        // Ganti 'false' menjadi 'true' untuk mengaktifkan mode maintenance
+        const MAINTENANCE_MODE = true; 
+    
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Logika Maintenance ---
+            if (MAINTENANCE_MODE) {
+                document.body.classList.add('maintenance-active');
+                return; // Hentikan sisa script jika maintenance
+            }
 
             // --- Popup Selamat Datang + Sound ---
             const welcomePopup = document.getElementById('welcome-popup');
             const welcomeCloseBtn = document.getElementById('welcome-close-btn');
             const notifSound = document.getElementById('notif-sound'); 
             
-            // [FIX] Coba mainkan sound saat load
+            // Coba mainkan sound saat load
             notifSound.play().catch(error => {
                 console.warn("Autoplay audio was blocked by browser:", error);
                 // Jika diblokir, mainkan saat tombol close diklik
@@ -1119,8 +1192,7 @@
                     resultMessage += "<br><strong>Catatan Penting:</strong><br>" + issues.join("<br>");
                 }
                 
-                // [KLARIFIKASI TEKS] + Disclaimer
-                resultMessage += "<br><p><strong>DISCLAIMER PENTING:</strong> Ini HANYA ESTIMASI KASAR. Performa asli bisa berbeda.</p><p>Jika spek kamu tidak lolos, sangat disarankan untuk sewa Cloud PC dari store rekomendasi seperti XyCloud!</p>";
+                resultMessage += "<br><p><strong>DISCLAIMER PENTING:</strong> Ini HANYA ESTIMASI KASAR. Performa asli bisa berbeda.</p><p>Jika spek kamu tidak lolos, sangat disarankan untuk sewa Cloud PC dari store rekomendasi!</p>";
 
                 calcResultText.innerHTML = resultMessage;
                 calcResult.style.display = 'block';
@@ -1132,11 +1204,14 @@
             faqItems.forEach(item => {
                 const question = item.querySelector('.faq-question');
                 question.addEventListener('click', () => {
-                    faqItems.forEach(otherItem => {
-                        if (otherItem !== item && otherItem.classList.contains('active')) {
-                            otherItem.classList.remove('active');
-                        }
-                    });
+                    // // [Opsional] Tutup semua item lain
+                    // faqItems.forEach(otherItem => {
+                    //     if (otherItem !== item && otherItem.classList.contains('active')) {
+                    //         otherItem.classList.remove('active');
+                    //     }
+                    // });
+                    
+                    // Buka/tutup item yang diklik
                     item.classList.toggle('active');
                 });
             });
@@ -1156,12 +1231,56 @@
             });
 
 
-            // --- Logika Modal Legal ---
+            // --- Logika Modal Legal (ISI LENGKAP) ---
             const legalText = {
-                privacy: { title: "Kebijakan Privasi", content: `<p>... (Isi Kebijakan Privasi lengkap di sini) ...</p>` },
-                tos: { title: "Syarat Layanan (ToS)", content: `<p>... (Isi Syarat Layanan lengkap di sini) ...</p>` },
-                cookie: { title: "Kebijakan Cookie", content: `<p>... (Isi Kebijakan Cookie lengkap di sini) ...</p>` }
+                privacy: { 
+                    title: "Kebijakan Privasi", 
+                    content: `
+                        <p><strong>Efektif per 30 Oktober 2025</strong></p>
+                        <p>Website ini (selanjutnya disebut "Kami") berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda.</p>
+                        <h3>Informasi yang Kami Kumpulkan</h3>
+                        <p>Kami tidak mengumpulkan data pribadi Anda secara langsung. Website ini hanya bertindak sebagai panduan dan portal informasi. Jika Anda mengklik link eksternal (misalnya ke Store, Discord, atau WhatsApp), Anda akan tunduk pada kebijakan privasi situs tersebut.</p>
+                        <h3>Cookie</h3>
+                        <p>Kami mungkin menggunakan cookie minimal untuk analitik dasar (melihat berapa banyak pengunjung) dan untuk mengingat preferensi Anda (misalnya, apakah Anda sudah menutup popup selamat datang).</p>
+                        <h3>Keamanan Data</h3>
+                        <p>Kami menerapkan langkah-langkah keamanan standar untuk melindungi website. Namun, kami tidak bertanggung jawab atas keamanan data di platform pihak ketiga yang kami rekomendasikan.</p>
+                    ` 
+                },
+                tos: { 
+                    title: "Syarat Layanan (ToS)", 
+                    content: `
+                        <p>Selamat datang di website panduan ini. Dengan mengakses situs ini, Anda setuju untuk terikat oleh Syarat & Ketentuan berikut:</p>
+                        <h3>1. Tujuan Situs</h3>
+                        <p>Situs ini adalah panduan informasi gratis. Kami merekomendasikan layanan pihak ketiga (seperti XyCloud Store, Discord, JoyArk) tetapi kami <strong>TIDAK</strong> berafiliasi secara resmi, memiliki, atau mengoperasikan layanan tersebut.</p>
+                        <h3>2. Transaksi</h3>
+                        <p>Semua transaksi pembelian, sewa, atau layanan yang Anda lakukan dengan pihak ketiga (termasuk XyCloud Store) adalah murni antara Anda dan pihak ketiga tersebut. Kami tidak bertanggung jawab atas kegagalan transaksi, kerugian finansial, atau masalah layanan apa pun.</p>
+                        <h3>3. Larangan Penggunaan</h3>
+                        <p>Anda setuju untuk tidak menggunakan informasi dari situs ini untuk aktivitas ilegal, termasuk namun tidak terbatas pada: Hacking, Carding, Phishing, DDoS, atau penipuan.</p>
+                        <h3>4. Batasan Tanggung Jawab</h3>
+                        <p>Informasi di situs ini (termasuk Kalkulator FPS) disediakan "SEBAGAIMANA ADANYA" dan hanya bersifat estimasi. Kami tidak menjamin keakuratan 100%. Kami tidak bertanggung jawab atas kerugian atau kerusakan apa pun yang timbul dari penggunaan informasi di situs ini.</p>
+                        <h3>5. Perubahan</h3>
+                        <p>Kami dapat mengubah ToS ini kapan saja tanpa pemberitahuan.</p>
+                    ` 
+                },
+                cookie: { 
+                    title: "Kebijakan Cookie", 
+                    content: `
+                        <p>Situs web ini menggunakan "cookie" untuk meningkatkan pengalaman pengguna Anda.</p>
+                        <h3>Apa itu Cookie?</h3>
+                        <p>Cookie adalah file teks kecil yang ditempatkan di hard drive Anda oleh server halaman web. Cookie tidak dapat digunakan untuk menjalankan program atau mengirimkan virus ke komputer Anda.</p>
+                        <h3>Bagaimana Kami Menggunakan Cookie</h3>
+                        <p>Kami menggunakan cookie untuk:</p>
+                        <ul>
+                            <li><strong>Analitik:</strong> Memahami bagaimana pengunjung menggunakan situs kami (misalnya, halaman mana yang populer) secara anonim.</li>
+                            <li><strong>Preferensi:</strong> Mengingat pengaturan Anda, seperti apakah Anda sudah melihat popup notifikasi.</li>
+                        </ul>
+                        <h3>Pilihan Anda</h3>
+                        <p>Anda memiliki kemampuan untuk menerima atau menolak cookie. Sebagian besar browser Web secara otomatis menerima cookie, tetapi Anda biasanya dapat memodifikasi pengaturan browser Anda untuk menolak cookie jika Anda mau.</p>
+                    ` 
+                }
             };
+            // --- Akhir Teks Legal ---
+            
             const modalOverlay = document.getElementById('modal-overlay');
             const modalTitle = document.getElementById('modal-title');
             const modalTextContainer = document.getElementById('modal-text-container');
